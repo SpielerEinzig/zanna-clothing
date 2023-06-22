@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zannas_clothing/src/mobile/screens/auth/login.dart';
-import 'package:zannas_clothing/src/mobile/utilities/page_navigation.dart';
-import 'package:zannas_clothing/src/mobile/widgets/custom_text_field.dart';
+import 'package:zannas_clothing/src/screens/auth/login.dart';
+import 'package:zannas_clothing/src/utilities/page_navigation.dart';
+import 'package:zannas_clothing/src/widgets/custom_text_field.dart';
 
 import '../../widgets/custom_button.dart';
 import '../shops/shop_list.dart';

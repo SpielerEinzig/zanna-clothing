@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zannas_clothing/src/mobile/screens/clients/client_list.dart';
-import 'package:zannas_clothing/src/mobile/utilities/constants.dart';
-import 'package:zannas_clothing/src/mobile/utilities/page_navigation.dart';
+
+import '../screens/clients/client_list.dart';
+import '../utilities/constants.dart';
+import '../utilities/page_navigation.dart';
 
 class ShopCard extends StatelessWidget {
   final String? icon;

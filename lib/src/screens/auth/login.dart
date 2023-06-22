@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zannas_clothing/src/mobile/screens/auth/sign_up.dart';
-import 'package:zannas_clothing/src/mobile/screens/shops/shop_list.dart';
+import 'package:zannas_clothing/src/screens/auth/sign_up.dart';
+import 'package:zannas_clothing/src/screens/shops/shop_list.dart';
 
 import '../../utilities/page_navigation.dart';
 import '../../widgets/custom_button.dart';

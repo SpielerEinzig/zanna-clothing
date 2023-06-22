@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'mobile/screens/auth/sign_up.dart';
+import 'package:zannas_clothing/src/screens/auth/sign_up.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({Key? key}) : super(key: key);
