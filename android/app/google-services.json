@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "236670279140",
+    "project_id": "zanna-clothing",
+    "storage_bucket": "zanna-clothing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:236670279140:android:813d20cd943478bb517bf1",
+        "android_client_info": {
+          "package_name": "com.spielereinzig.zannasclothing.zannas_clothing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "236670279140-mfq71609h63oecifr85vg968097j6tma.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAA2k23okgjXqNtmt-pOq3OfhXd3YyPFMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "236670279140-mfq71609h63oecifr85vg968097j6tma.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
