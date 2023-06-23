@@ -1,3 +1,5 @@
+const Duration duration = Duration(milliseconds: 100);
+
 List<String> measurements = [
   "Head size",
   "Neck",

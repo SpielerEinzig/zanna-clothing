@@ -1,38 +1,61 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomButton extends StatefulWidget {
   final String text;
-  final VoidCallback onTap;
+  final Function() onTap;
   final Color? color;
+  final Color? indicatorColor;
 
   const CustomButton({
     Key? key,
+    this.color,
+    this.indicatorColor,
     required this.text,
     required this.onTap,
-    this.color,
   }) : super(key: key);
+
+  @override
+  State<CustomButton> createState() => _CustomButtonState();
+}
+
+class _CustomButtonState extends State<CustomButton> {
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onTap,
+      onTap: () async {
+        setState(() {
+          loading = true;
+        });
+
+        await widget.onTap();
+
+        setState(() {
+          loading = false;
+        });
+      },
       child: Container(
         decoration: BoxDecoration(
-          color: color ?? Colors.black,
+          color: widget.color ?? Colors.black,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 15),
-            child: Text(
-              text,
-              style: const TextStyle(
-                fontSize: 22,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-              ),
-            ),
+            child: loading
+                ? CircularProgressIndicator(
+                    color: widget.indicatorColor ?? Colors.white,
+                  )
+                : Text(
+                    widget.text,
+                    style: const TextStyle(
+                      fontSize: 22,
+                      letterSpacing: 1.2,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
           ),
         ),
       ),

@@ -41,7 +41,7 @@ class AuthService {
     }
   }
 
-  Future<String> changeEmail({required String newEmail}) async {
+  Future<String> changeEmail(String newEmail) async {
     try {
       final userAuthDetail = _firebaseAuth.currentUser;
 
