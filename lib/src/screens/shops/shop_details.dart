@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zannas_clothing/src/mobile/widgets/custom_text_field.dart';
+import 'package:zannas_clothing/src/widgets/custom_text_field.dart';
 
 import '../../widgets/custom_button.dart';
 

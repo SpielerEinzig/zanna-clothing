@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zannas_clothing/src/mobile/screens/auth/sign_up.dart';
-import 'package:zannas_clothing/src/mobile/screens/shops/shop_list.dart';
+import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/screens/auth/sign_up.dart';
+import 'package:zannas_clothing/src/screens/shops/shop_list.dart';
 
+import '../../provider/user_provider.dart';
+import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
@@ -16,6 +19,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String errorMessage = "";
   bool showPassword = false;
 
   @override
@@ -59,19 +63,36 @@ class _LoginState extends State<Login> {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     CustomTextField(
                       hintText: "Enter your email",
                       controller: _emailController,
                       label: "Email",
                       isPassword: false,
                     ),
-                    const SizedBox(height: 20),
                     CustomTextField(
                       hintText: "Enter your password",
                       controller: _passwordController,
                       label: "Password",
                       isPassword: false,
+                      suffix: InkWell(
+                        onTap: () => setState(() {
+                          showPassword = !showPassword;
+                        }),
+                        child: Icon(showPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off),
+                      ),
+                    ),
+                    Center(
+                      child: Text(
+                        errorMessage,
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -82,10 +103,27 @@ class _LoginState extends State<Login> {
                 Expanded(
                   child: CustomButton(
                     onTap: () async {
-                      PageNavigation().replacePage(
-                        context: context,
-                        page: const ShopList(),
-                      );
+                      if (_emailController.text.isNotEmpty &&
+                          _passwordController.text.isNotEmpty) {
+                        String response = await context
+                            .read<UserProvider>()
+                            .loginUser(
+                                email: _emailController.text,
+                                password: _passwordController.text);
+
+                        if (response == 'success') {
+                          await Future.delayed(duration, () {
+                            PageNavigation().replacePage(
+                              context: context,
+                              page: const ShopList(),
+                            );
+                          });
+                        } else {
+                          setState(() {
+                            errorMessage = response;
+                          });
+                        }
+                      }
                     },
                     text: "Log in",
                   ),
