@@ -98,7 +98,7 @@ class ShopCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               const Row(
                 children: [
                   SizedBox(width: 17),
@@ -106,12 +106,12 @@ class ShopCard extends StatelessWidget {
                     radius: 15,
                     backgroundImage: NetworkImage(dummyImage),
                   ),
-                  SizedBox(width: 38),
+                  SizedBox(width: 20),
                   Expanded(
                     child: Text(
                       "Last Client: Obi Cubanna",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
@@ -119,7 +119,7 @@ class ShopCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   const SizedBox(width: 35),
