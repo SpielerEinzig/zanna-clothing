@@ -6,7 +6,7 @@ import '../models/shop_model.dart';
 
 List<ShopModel> _shopList = [];
 
-class ShopClientProvider with ChangeNotifier {
+class ShopProvider with ChangeNotifier {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final ShopService _shopService = ShopService();
 
