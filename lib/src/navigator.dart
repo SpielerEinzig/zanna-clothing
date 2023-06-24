@@ -21,8 +21,6 @@ class _PageNavigatorState extends State<PageNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: FutureBuilder(
         builder: (context, snapshot) {

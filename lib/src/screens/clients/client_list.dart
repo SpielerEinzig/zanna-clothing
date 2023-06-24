@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/models/shop_model.dart';
+import 'package:zannas_clothing/src/provider/client_provider.dart';
 
 import '../../utilities/page_navigation.dart';
 import '../../widgets/client_card.dart';
@@ -6,7 +9,8 @@ import '../../widgets/search_bar_text_field.dart';
 import 'measurement_details.dart';
 
 class ClientList extends StatefulWidget {
-  const ClientList({Key? key}) : super(key: key);
+  final ShopModel? shopModel;
+  const ClientList({Key? key, required this.shopModel}) : super(key: key);
 
   @override
   State<ClientList> createState() => _ClientListState();
@@ -18,14 +22,19 @@ class _ClientListState extends State<ClientList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Row(
+        title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircleAvatar(
+            const CircleAvatar(
               backgroundImage: AssetImage("assets/images/logo.png"),
             ),
-            SizedBox(width: 10),
-            Text("Victoria Island shop"),
+            const SizedBox(width: 10),
+            Text(
+              widget.shopModel != null
+                  ? "${widget.shopModel!.name} clients"
+                  : "All clients",
+              overflow: TextOverflow.ellipsis,
+            ),
           ],
         ),
       ),
@@ -56,16 +65,23 @@ class _ClientListState extends State<ClientList> {
               ),
               const SizedBox(height: 30),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (context, index) {
-                    return ClientCard(
-                      onTap: () {},
-                      dateTime: DateTime.now(),
-                      name: "Okafor",
-                    );
-                  },
-                ),
+                child: Consumer<ClientProvider>(
+                    builder: (context, clients, child) {
+                  return clients.getClientList.isEmpty
+                      ? const Center(
+                          child:
+                              Text("You don't have any clients in this shop"),
+                        )
+                      : ListView.builder(
+                          itemCount: clients.getClientList.length,
+                          itemBuilder: (context, index) {
+                            return ClientCard(
+                                onTap: () {},
+                                dateTime:
+                                    clients.getClientList[index].dateAdded,
+                                name: clients.getClientList[index].name);
+                          });
+                }),
               ),
             ],
           )),

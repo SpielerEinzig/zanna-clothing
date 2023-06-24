@@ -23,7 +23,7 @@ class ShopCard extends StatelessWidget {
         onTap: () {
           PageNavigation().pushPage(
             context: context,
-            page: const ClientList(),
+            page: ClientList(shopModel: shop),
           );
         },
         child: Container(
@@ -127,12 +127,12 @@ class ShopCard extends StatelessWidget {
                     onPressed: () {
                       PageNavigation().pushPage(
                         context: context,
-                        page: const ClientList(),
+                        page: ClientList(shopModel: shop),
                       );
                     },
                     child: const Row(
                       children: [
-                        Text("Show all 25 clients"),
+                        Text("Show 25 clients"),
                         Icon(Icons.arrow_forward_ios),
                       ],
                     ),
