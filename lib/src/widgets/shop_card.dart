@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:zannas_clothing/src/models/shop_model.dart';
+import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 
 import '../screens/clients/client_list.dart';
 import '../utilities/constants.dart';
@@ -6,12 +8,10 @@ import '../utilities/page_navigation.dart';
 
 class ShopCard extends StatelessWidget {
   final String? icon;
-  final String shop;
-  final int clients;
+  final ShopModel shop;
   const ShopCard({
     Key? key,
     this.icon,
-    required this.clients,
     required this.shop,
   }) : super(key: key);
 
@@ -60,7 +60,7 @@ class ShopCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                shop,
+                                shop.name,
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Colors.white,
@@ -68,10 +68,10 @@ class ShopCard extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 6),
-                              const Text(
-                                "25 Awolowo avenue, victoria island",
+                              Text(
+                                shop.address,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,
@@ -84,7 +84,12 @@ class ShopCard extends StatelessWidget {
                     ),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PageNavigation().pushPage(
+                        context: context,
+                        page: ShopDetails(shopModel: shop),
+                      );
+                    },
                     icon: const Icon(
                       Icons.edit,
                       size: 18,
@@ -93,7 +98,7 @@ class ShopCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               const Row(
                 children: [
                   SizedBox(width: 17),
@@ -101,12 +106,12 @@ class ShopCard extends StatelessWidget {
                     radius: 15,
                     backgroundImage: NetworkImage(dummyImage),
                   ),
-                  SizedBox(width: 38),
+                  SizedBox(width: 20),
                   Expanded(
                     child: Text(
                       "Last Client: Obi Cubanna",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w500,
                         color: Colors.white,
                       ),
@@ -114,12 +119,17 @@ class ShopCard extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   const SizedBox(width: 35),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      PageNavigation().pushPage(
+                        context: context,
+                        page: const ClientList(),
+                      );
+                    },
                     child: const Row(
                       children: [
                         Text("Show all 25 clients"),
