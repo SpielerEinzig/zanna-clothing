@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/provider/shop_client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 import 'package:zannas_clothing/src/widgets/shop_card.dart';
 
@@ -13,6 +15,12 @@ class ShopList extends StatefulWidget {
 
 class _ShopListState extends State<ShopList> {
   @override
+  void initState() {
+    super.initState();
+    context.read<ShopClientProvider>().listenShopList();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -22,36 +30,21 @@ class _ShopListState extends State<ShopList> {
         ),
         title: const Text("SHOPS"),
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(15),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ShopCard(
-                clients: 8,
-                shop: "Victoria Island Shop",
-              ),
-              ShopCard(
-                clients: 8,
-                shop: "Victoria Island Shop",
-              ),
-              ShopCard(
-                clients: 8,
-                shop: "Victoria Island Shop",
-              ),
-              ShopCard(
-                clients: 8,
-                shop: "Victoria Island Shop",
-              ),
-            ],
-          ),
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Consumer<ShopClientProvider>(builder: (context, shops, child) {
+          return ListView.builder(
+              itemCount: shops.getShopList.length,
+              itemBuilder: (context, index) {
+                return ShopCard(shop: shops.getShopList[index]);
+              });
+        }),
       ),
       floatingActionButton: IconButton(
         onPressed: () {
           PageNavigation().pushPage(
             context: context,
-            page: const ShopDetails(),
+            page: const ShopDetails(shopModel: null),
           );
         },
         icon: Container(
