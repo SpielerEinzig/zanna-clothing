@@ -1,13 +1,13 @@
 const Duration duration = Duration(milliseconds: 100);
 
 List<String> measurements = [
-  "Head size",
+  "Head Size",
   "Neck",
   "Chest",
-  "Round tummy",
-  "Round hip",
+  "Round Tummy",
+  "Round Hip",
   "Round Arm",
-  "Top length",
+  "Top Length",
   "Pant",
   "Waist",
   "Laps",

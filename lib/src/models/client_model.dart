@@ -9,19 +9,8 @@ class ClientModel {
   String profession;
   String occasion;
   DateTime dateAdded;
-  String headSize;
-  String neck;
-  String chest;
-  String roundTummy;
-  String roundHip;
-  String roundArm;
-  String topLength;
-  String pant;
-  String waist;
-  String laps;
-  String calf;
-  String pantTip;
-  String pantLength;
+  List<String> images;
+  Map measurements;
 
   ClientModel({
     required this.id,
@@ -34,19 +23,8 @@ class ClientModel {
     required this.postalCode,
     required this.profession,
     required this.dateAdded,
-    required this.headSize,
-    required this.neck,
-    required this.chest,
-    required this.roundTummy,
-    required this.roundHip,
-    required this.roundArm,
-    required this.topLength,
-    required this.pant,
-    required this.waist,
-    required this.laps,
-    required this.calf,
-    required this.pantTip,
-    required this.pantLength,
+    required this.images,
+    required this.measurements,
   });
 
   ClientModel.fromJson(Map<String, dynamic> json)
@@ -60,19 +38,8 @@ class ClientModel {
         profession = json['profession'],
         address = json['address'],
         dateAdded = json['dateAdded'].toDate(),
-        headSize = json['headSize'],
-        neck = json['neck'],
-        chest = json['chest'],
-        roundTummy = json['roundTummy'],
-        roundHip = json['roundHip'],
-        roundArm = json['roundArm'],
-        topLength = json['topLength'],
-        pant = json['pant'],
-        waist = json['waist'],
-        laps = json['laps'],
-        calf = json['calf'],
-        pantTip = json['pantTip'],
-        pantLength = json['pantLength'];
+        measurements = json['measurements'],
+        images = List<String>.from(json['images']);
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -85,19 +52,8 @@ class ClientModel {
         'profession': profession,
         'address': address,
         'dateAdded': dateAdded,
-        'headSize': headSize,
-        'neck': neck,
-        'chest': chest,
-        'roundTummy': roundTummy,
-        'roundHip': roundHip,
-        'roundArm': roundArm,
-        'topLength': topLength,
-        'pant': pant,
-        'waist': waist,
-        'laps': laps,
-        'calf': calf,
-        'pantTip': pantTip,
-        'pantLength': pantLength,
+        'measurements': measurements,
+        'images': images,
       };
 
   @override

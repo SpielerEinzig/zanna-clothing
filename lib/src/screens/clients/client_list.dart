@@ -6,7 +6,7 @@ import 'package:zannas_clothing/src/provider/client_provider.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/client_card.dart';
 import '../../widgets/search_bar_text_field.dart';
-import 'measurement_details.dart';
+import 'client_details.dart';
 
 class ClientList extends StatefulWidget {
   final ShopModel? shopModel;

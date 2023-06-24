@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/provider/client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 import 'package:zannas_clothing/src/widgets/shop_card.dart';
 
@@ -18,6 +19,7 @@ class _ShopListState extends State<ShopList> {
   void initState() {
     super.initState();
     context.read<ShopProvider>().listenShopList();
+    context.read<ClientProvider>().listenClientList();
   }
 
   @override
