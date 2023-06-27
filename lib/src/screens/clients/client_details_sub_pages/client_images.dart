@@ -22,8 +22,15 @@ class ClientImages extends StatefulWidget {
 
 class _ClientImagesState extends State<ClientImages> {
   final ImagePickerService _pickerService = ImagePickerService();
+
   @override
   Widget build(BuildContext context) {
+    ClientModel clientModel = context.read<ClientProvider>().getClientList[
+        context
+            .read<ClientProvider>()
+            .getClientList
+            .indexOf(widget.clientModel)];
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -32,7 +39,7 @@ class _ClientImagesState extends State<ClientImages> {
           children: [
             Expanded(
               child: GridView.builder(
-                itemCount: widget.clientModel.images.length,
+                itemCount: clientModel.images.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3),
                 itemBuilder: (context, index) {
@@ -40,12 +47,13 @@ class _ClientImagesState extends State<ClientImages> {
                     padding: const EdgeInsets.all(10),
                     child: Container(
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image:
-                                NetworkImage(widget.clientModel.images[index]),
-                          )),
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.circular(20),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(clientModel.images[index]),
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -69,6 +77,8 @@ class _ClientImagesState extends State<ClientImages> {
                                   clientId: widget.clientModel.id,
                                   selectedFiles: pickedFiles);
                         });
+
+                        setState(() {});
                       },
                       cameraSelected: () async {
                         File? pickedFile = await _pickerService.pickImage(null);
@@ -82,6 +92,8 @@ class _ClientImagesState extends State<ClientImages> {
                                     selectedFiles: [pickedFile]);
                           });
                         }
+
+                        setState(() {});
                       },
                     );
                   },
