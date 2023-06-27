@@ -33,4 +33,19 @@ class ClientService {
       return e.message ?? "An error occurred";
     }
   }
+
+  Future<String> uploadClientImages({
+    required List<String> imageUrls,
+    required String clientId,
+  }) async {
+    try {
+      await _clientCollection.doc(clientId).update({
+        "images": FieldValue.arrayUnion(imageUrls),
+      });
+
+      return "success";
+    } on FirebaseException catch (e) {
+      return e.message ?? "An error occurred";
+    }
+  }
 }

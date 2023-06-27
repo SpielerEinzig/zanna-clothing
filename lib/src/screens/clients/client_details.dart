@@ -12,6 +12,7 @@ import '../../utilities/confirmation_dialog.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/custom_button.dart';
+import 'client_details_sub_pages/client_images.dart';
 
 class MeasurementDetails extends StatefulWidget {
   final ShopModel? shopModel;
@@ -108,7 +109,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: widget.clientModel != null ? 3 : 2,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -161,9 +162,9 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
           title: Text(widget.clientModel != null
               ? widget.clientModel!.name
               : "New client"),
-          bottom: const TabBar(
+          bottom: TabBar(
             tabs: <Widget>[
-              Tab(
+              const Tab(
                 child: Text(
                   "Profile",
                   style: TextStyle(
@@ -172,20 +173,21 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Tab(
+              const Tab(
                 child: Text(
                   "Measurements",
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
-              Tab(
-                child: Text(
-                  "Pictures",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w600),
+              if (widget.clientModel != null)
+                const Tab(
+                  child: Text(
+                    "Pictures",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w600),
+                  ),
                 ),
-              ),
             ],
           ),
         ),
@@ -220,28 +222,10 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                         calfController: calfController,
                         pantTipController: pantTipController,
                         pantLengthController: pantLengthController),
-                    GridView.builder(
-                      itemCount: widget.clientModel != null
-                          ? widget.clientModel!.images.length
-                          : 0,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3),
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              image: const DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(dummyImage),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    if (widget.clientModel != null)
+                      ClientImages(
+                        clientModel: widget.clientModel!,
+                      ),
                   ],
                 ),
               ),
@@ -251,7 +235,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                   if (name.text.isNotEmpty) {
                     widget.clientModel == null
                         ? await context.read<ClientProvider>().createClient(
-                              ClientModel(
+                              clientModel: ClientModel(
                                 shopId: widget.shopModel != null
                                     ? widget.shopModel!.id
                                     : "",
