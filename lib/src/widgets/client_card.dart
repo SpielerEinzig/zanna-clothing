@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/models/shop_model.dart';
+import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/utilities/main_utilities.dart';
+
+import '../models/client_model.dart';
+import '../screens/clients/client_details.dart';
+import '../utilities/page_navigation.dart';
 
 class ClientCard extends StatelessWidget {
-  final VoidCallback onTap;
-  final DateTime dateTime;
-  final String name;
+  final ClientModel clientModel;
+  final ShopModel? shopModel;
   final String? icon;
   const ClientCard({
     Key? key,
-    required this.onTap,
-    required this.dateTime,
-    required this.name,
+    required this.clientModel,
+    required this.shopModel,
     this.icon,
   }) : super(key: key);
 
@@ -18,7 +24,13 @@ class ClientCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25),
       child: InkWell(
-        onTap: onTap,
+        onTap: () {
+          PageNavigation().pushPage(
+            context: context,
+            page: MeasurementDetails(
+                clientModel: clientModel, shopModel: shopModel),
+          );
+        },
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(20),
@@ -46,7 +58,8 @@ class ClientCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "$name's measurements",
+                          "${clientModel.name}'s measurements",
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             fontSize: 16,
                             color: Colors.white,
@@ -54,9 +67,9 @@ class ClientCard extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 6),
-                        const Text(
-                          "09:16 AM 17th Jun 2023",
-                          style: TextStyle(
+                        Text(
+                          MainUtilities.formatDateTime(clientModel.dateAdded),
+                          style: const TextStyle(
                             fontSize: 14,
                             color: Colors.white,
                             fontWeight: FontWeight.w400,
@@ -68,7 +81,11 @@ class ClientCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await context
+                        .read<ClientProvider>()
+                        .deleteClient(clientModel.id);
+                  },
                   icon: const Icon(
                     Icons.delete_forever,
                     color: Colors.red,

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zannas_clothing/src/provider/shop_client_provider.dart';
+import 'package:zannas_clothing/src/provider/client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 import 'package:zannas_clothing/src/widgets/shop_card.dart';
 
+import '../../provider/shop_provider.dart';
 import '../../utilities/page_navigation.dart';
 
 class ShopList extends StatefulWidget {
@@ -17,7 +18,8 @@ class _ShopListState extends State<ShopList> {
   @override
   void initState() {
     super.initState();
-    context.read<ShopClientProvider>().listenShopList();
+    context.read<ShopProvider>().listenShopList();
+    context.read<ClientProvider>().listenClientList();
   }
 
   @override
@@ -32,7 +34,7 @@ class _ShopListState extends State<ShopList> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: Consumer<ShopClientProvider>(builder: (context, shops, child) {
+        child: Consumer<ShopProvider>(builder: (context, shops, child) {
           return ListView.builder(
               itemCount: shops.getShopList.length,
               itemBuilder: (context, index) {

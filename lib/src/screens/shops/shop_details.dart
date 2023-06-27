@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zannas_clothing/src/provider/shop_client_provider.dart';
-import 'package:zannas_clothing/src/utilities/mainUtilities.dart';
 import 'package:zannas_clothing/src/utilities/show_snackbar.dart';
 import 'package:zannas_clothing/src/widgets/custom_text_field.dart';
 import 'package:zannas_clothing/src/widgets/multi_line_text_field.dart';
 
 import '../../models/shop_model.dart';
+import '../../provider/shop_provider.dart';
 import '../../utilities/constants.dart';
+import '../../utilities/main_utilities.dart';
 import '../../widgets/custom_button.dart';
 
 class ShopDetails extends StatefulWidget {
@@ -89,12 +89,12 @@ class _ShopDetailsState extends State<ShopDetails> {
                 if (_shopNameController.text.isNotEmpty &&
                     _addressController.text.isNotEmpty) {
                   if (widget.shopModel != null) {
-                    await context.read<ShopClientProvider>().editShop(ShopModel(
+                    await context.read<ShopProvider>().editShop(ShopModel(
                         id: widget.shopModel!.id,
                         name: _shopNameController.text,
                         address: _addressController.text));
                   } else {
-                    await context.read<ShopClientProvider>().createShop(
+                    await context.read<ShopProvider>().createShop(
                           address: _addressController.text,
                           name: _shopNameController.text,
                         );

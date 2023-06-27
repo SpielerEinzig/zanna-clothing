@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String hintText;
   final TextEditingController controller;
+  final Function(String)? onChanged;
   final String label;
   final bool isPassword;
   final Widget? suffix;
   const CustomTextField({
     Key? key,
     this.suffix,
+    this.onChanged,
     required this.hintText,
-    required this.controller,
     required this.label,
     required this.isPassword,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class CustomTextField extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           TextField(
+            onChanged: onChanged,
             controller: controller,
             keyboardType: isPassword
                 ? TextInputType.visiblePassword

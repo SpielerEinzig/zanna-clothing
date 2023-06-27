@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 import 'package:zannas_clothing/src/screens/auth/sign_up.dart';
+import 'package:zannas_clothing/src/screens/shops/shop_list.dart';
 
 class PageNavigator extends StatefulWidget {
   const PageNavigator({Key? key}) : super(key: key);
@@ -10,9 +14,32 @@ class PageNavigator extends StatefulWidget {
 
 class _PageNavigatorState extends State<PageNavigator> {
   @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+  void initState() {
+    super.initState();
+    context.read<UserProvider>().getUser();
+  }
 
-    return size.width <= 800 ? const SignUp() : const SignUp();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.black),
+            );
+          } else if (snapshot.hasError) {
+            return const Center(
+              child: Text("We encountered an error. "
+                  "Please make sure your phone is connected to internet"),
+            );
+          } else {
+            User? user = context.read<UserProvider>().getCurrentUser;
+
+            return user == null ? const SignUp() : const ShopList();
+          }
+        },
+      ),
+    );
   }
 }
