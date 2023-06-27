@@ -8,6 +8,7 @@ import 'package:zannas_clothing/src/utilities/main_utilities.dart';
 import 'package:zannas_clothing/src/utilities/show_snackbar.dart';
 
 import '../../provider/client_provider.dart';
+import '../../utilities/confirmation_dialog.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/custom_button.dart';
@@ -121,13 +122,41 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
             ),
           ),
           actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.delete_forever,
-                color: Colors.white,
+            if (widget.clientModel != null)
+              IconButton(
+                onPressed: () async {
+                  bool? popPage = await showDialog(
+                      context: context,
+                      builder: (context) {
+                        return ConfirmationDialog(
+                          onAccept: () async {
+                            await context
+                                .read<ClientProvider>()
+                                .deleteClient(widget.clientModel!.id);
+
+                            await Future.delayed(duration, () {
+                              Navigator.pop(context, true);
+                            });
+                          },
+                          title: "Remove this client?",
+                          acceptLabel: "Yes, remove",
+                          content: const Text(
+                              "Are you sure you want to remove this client?"
+                              " You won't be able to recover the client data"),
+                        );
+                      });
+
+                  if (popPage == true) {
+                    await Future.delayed(duration, () {
+                      Navigator.pop(context);
+                    });
+                  }
+                },
+                icon: const Icon(
+                  Icons.delete_forever,
+                  color: Colors.white,
+                ),
               ),
-            ),
           ],
           title: Text(widget.clientModel != null
               ? widget.clientModel!.name

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/utilities/confirmation_dialog.dart';
 import 'package:zannas_clothing/src/utilities/main_utilities.dart';
 
 import '../models/client_model.dart';
 import '../screens/clients/client_details.dart';
+import '../utilities/constants.dart';
 import '../utilities/page_navigation.dart';
 
 class ClientCard extends StatelessWidget {
@@ -82,9 +84,26 @@ class ClientCard extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () async {
-                    await context
-                        .read<ClientProvider>()
-                        .deleteClient(clientModel.id);
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return ConfirmationDialog(
+                            onAccept: () async {
+                              await context
+                                  .read<ClientProvider>()
+                                  .deleteClient(clientModel.id);
+
+                              await Future.delayed(duration, () {
+                                Navigator.pop(context, true);
+                              });
+                            },
+                            title: "Remove this client?",
+                            acceptLabel: "Yes, remove",
+                            content: const Text(
+                                "Are you sure you want to remove this client?"
+                                " You won't be able to recover the client data"),
+                          );
+                        });
                   },
                   icon: const Icon(
                     Icons.delete_forever,
