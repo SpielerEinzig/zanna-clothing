@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.spielereinzig.zannasclothing" "\0"
-            VALUE "FileDescription", "zannas_clothing" "\0"
+            VALUE "FileDescription", "Zanna clothings" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "zannas_clothing" "\0"
+            VALUE "InternalName", "Zanna clothings" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.spielereinzig.zannasclothing. All rights reserved." "\0"
             VALUE "OriginalFilename", "zannas_clothing.exe" "\0"
-            VALUE "ProductName", "zannas_clothing" "\0"
+            VALUE "ProductName", "Zanna clothings" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

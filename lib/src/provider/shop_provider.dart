@@ -14,7 +14,11 @@ class ShopProvider with ChangeNotifier {
 
   listenShopList() {
     if (_shopList.isEmpty) {
-      _firestore.collection("shops").snapshots().listen((snapshots) {
+      _firestore
+          .collection("shops")
+          .orderBy("name")
+          .snapshots()
+          .listen((snapshots) {
         final data = snapshots.docs;
 
         _shopList = data.map<ShopModel>((doc) {
