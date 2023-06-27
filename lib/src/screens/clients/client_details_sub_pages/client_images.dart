@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/client_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/image_detail.dart';
 import 'package:zannas_clothing/src/utilities/image_picker_service.dart';
 import 'package:zannas_clothing/src/utilities/main_utilities.dart';
+import 'package:zannas_clothing/src/utilities/page_navigation.dart';
 
 import '../../../utilities/constants.dart';
 
@@ -45,13 +47,22 @@ class _ClientImagesState extends State<ClientImages> {
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.all(10),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(clientModel.images[index]),
+                    child: InkWell(
+                      onTap: () async {
+                        PageNavigation().pushPage(
+                          context: context,
+                          page:
+                              ImageDetail(imageUrl: clientModel.images[index]),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.grey[200],
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(clientModel.images[index]),
+                          ),
                         ),
                       ),
                     ),
