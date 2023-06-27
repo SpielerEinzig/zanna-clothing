@@ -16,7 +16,7 @@ class ClientService {
 
   Future<String> editClient(ClientModel clientModel) async {
     try {
-      await _clientCollection.doc().update(clientModel.toJson());
+      await _clientCollection.doc(clientModel.id).update(clientModel.toJson());
 
       return "Success";
     } on FirebaseException catch (e) {
