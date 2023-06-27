@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/client_model.dart';
@@ -34,6 +35,48 @@ class _ClientImagesState extends State<ClientImages> {
             .indexOf(widget.clientModel)];
 
     return Scaffold(
+      floatingActionButton: kIsWeb
+          ? const SizedBox()
+          : FloatingActionButton(
+              onPressed: () async {
+                MainUtilities().showImagePickerBottomSheet(
+                  context: context,
+                  fileSelected: () async {
+                    List<File> pickedFiles =
+                        await _pickerService.pickMultipleImages();
+
+                    await Future.delayed(duration, () async {
+                      await context.read<ClientProvider>().uploadImagesToClient(
+                          clientId: widget.clientModel.id,
+                          selectedFiles: pickedFiles);
+                    });
+
+                    setState(() {});
+                  },
+                  cameraSelected: () async {
+                    File? pickedFile = await _pickerService.pickImage(null);
+
+                    if (pickedFile != null) {
+                      await Future.delayed(duration, () async {
+                        await context
+                            .read<ClientProvider>()
+                            .uploadImagesToClient(
+                                clientId: widget.clientModel.id,
+                                selectedFiles: [pickedFile]);
+                      });
+                    }
+
+                    setState(() {});
+                  },
+                );
+              },
+              shape: const CircleBorder(),
+              backgroundColor: Colors.black,
+              child: const Icon(
+                Icons.add_photo_alternate_rounded,
+                color: Colors.white,
+              ),
+            ),
       body: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
@@ -59,63 +102,21 @@ class _ClientImagesState extends State<ClientImages> {
                         decoration: BoxDecoration(
                           color: Colors.grey[200],
                           borderRadius: BorderRadius.circular(20),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(clientModel.images[index]),
-                          ),
+                        ),
+                        child: Image.network(
+                          clientModel.images[index],
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Center(
+                              child: Icon(Icons.error),
+                            );
+                          },
                         ),
                       ),
                     ),
                   );
                 },
               ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  onPressed: () async {
-                    MainUtilities().showImagePickerBottomSheet(
-                      context: context,
-                      fileSelected: () async {
-                        List<File> pickedFiles =
-                            await _pickerService.pickMultipleImages();
-
-                        await Future.delayed(duration, () async {
-                          await context
-                              .read<ClientProvider>()
-                              .uploadImagesToClient(
-                                  clientId: widget.clientModel.id,
-                                  selectedFiles: pickedFiles);
-                        });
-
-                        setState(() {});
-                      },
-                      cameraSelected: () async {
-                        File? pickedFile = await _pickerService.pickImage(null);
-
-                        if (pickedFile != null) {
-                          await Future.delayed(duration, () async {
-                            await context
-                                .read<ClientProvider>()
-                                .uploadImagesToClient(
-                                    clientId: widget.clientModel.id,
-                                    selectedFiles: [pickedFile]);
-                          });
-                        }
-
-                        setState(() {});
-                      },
-                    );
-                  },
-                  shape: const CircleBorder(),
-                  backgroundColor: Colors.black,
-                  child: const Icon(
-                    Icons.add_photo_alternate_rounded,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
             ),
           ],
         ),

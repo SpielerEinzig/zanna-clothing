@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/screens/auth/sign_up.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_list.dart';
+import 'package:zannas_clothing/src/services/auth_service.dart';
+import 'package:zannas_clothing/src/utilities/show_snackbar.dart';
 
 import '../../provider/user_provider.dart';
 import '../../utilities/constants.dart';
@@ -93,6 +95,37 @@ class _LoginState extends State<Login> {
                             ? Icons.visibility
                             : Icons.visibility_off),
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            if (_emailController.text.isNotEmpty) {
+                              String status =
+                                  await AuthService().forgotPassword(
+                                email: _emailController.text,
+                              );
+
+                              await Future.delayed(duration, () {
+                                showSnackBar(
+                                    text: status == "success"
+                                        ? "We sent steps to reset your password"
+                                            " to ${_emailController.text}."
+                                            " Don't forget to check your spam"
+                                        : status,
+                                    context: context);
+                              });
+                            } else {
+                              showSnackBar(
+                                  text: "Please enter your email so we "
+                                      "can send a password reset link",
+                                  context: context);
+                            }
+                          },
+                          child: const Text("Forgot password"),
+                        ),
+                      ],
                     ),
                     Center(
                       child: Text(

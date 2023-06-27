@@ -41,7 +41,7 @@ class _ShopListState extends State<ShopList> {
         }),
       ),
       floatingActionButton: IconButton(
-        onPressed: () {
+        onPressed: () async {
           PageNavigation().pushPage(
             context: context,
             page: const ShopDetails(shopModel: null),
