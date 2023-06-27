@@ -4,14 +4,12 @@ import 'package:flutter/services.dart';
 class MeasurementTextField extends StatelessWidget {
   final String title;
   final String hintText;
-  final double value;
-  final Function(String) onChanged;
+  final TextEditingController controller;
   const MeasurementTextField({
     Key? key,
-    required this.value,
     required this.hintText,
     required this.title,
-    required this.onChanged,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -67,7 +65,7 @@ class MeasurementTextField extends StatelessWidget {
                   Expanded(
                     flex: 5,
                     child: TextField(
-                      onChanged: onChanged,
+                      controller: controller,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(5),
                       ],

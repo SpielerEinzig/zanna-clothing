@@ -10,9 +10,23 @@ class ClientModel {
   String occasion;
   DateTime dateAdded;
   List<String> images;
-  Map measurements;
+  String shopId;
+  String headSize;
+  String neck;
+  String chest;
+  String roundTummy;
+  String roundHip;
+  String roundArm;
+  String topLength;
+  String pant;
+  String waist;
+  String laps;
+  String calf;
+  String pantTip;
+  String pantLength;
 
   ClientModel({
+    required this.shopId,
     required this.id,
     required this.address,
     required this.name,
@@ -24,11 +38,24 @@ class ClientModel {
     required this.profession,
     required this.dateAdded,
     required this.images,
-    required this.measurements,
+    required this.headSize,
+    required this.neck,
+    required this.chest,
+    required this.roundTummy,
+    required this.roundHip,
+    required this.roundArm,
+    required this.topLength,
+    required this.pant,
+    required this.waist,
+    required this.laps,
+    required this.calf,
+    required this.pantTip,
+    required this.pantLength,
   });
 
   ClientModel.fromJson(Map<String, dynamic> json)
       : id = json['id'],
+        shopId = json['shopId'],
         name = json['name'],
         email = json['email'],
         phoneNumber = json['phoneNumber'],
@@ -37,23 +64,48 @@ class ClientModel {
         postalCode = json['postalCode'],
         profession = json['profession'],
         address = json['address'],
-        dateAdded = json['dateAdded'].toDate(),
-        measurements = json['measurements'],
-        images = List<String>.from(json['images']);
+        dateAdded = DateTime.parse(json['dateAdded']),
+        images = List<String>.from(json['images']),
+        headSize = json['headSize'],
+        neck = json['neck'],
+        chest = json['chest'],
+        roundTummy = json['roundTummy'],
+        roundHip = json['roundHip'],
+        roundArm = json['roundArm'],
+        topLength = json['topLength'],
+        pant = json['pant'],
+        waist = json['waist'],
+        laps = json['laps'],
+        calf = json['calf'],
+        pantTip = json['pantTip'],
+        pantLength = json['pantLength'];
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'email': email,
         'id': id,
+        'shopId': shopId,
+        'name': name,
         'phoneNumber': phoneNumber,
-        'occasion': occasion,
+        'email': email,
         'birthday': birthday,
+        'address': address,
         'postalCode': postalCode,
         'profession': profession,
-        'address': address,
-        'dateAdded': dateAdded,
-        'measurements': measurements,
+        'occasion': occasion,
+        'dateAdded': dateAdded.toIso8601String(),
         'images': images,
+        'headSize': headSize,
+        'neck': neck,
+        'chest': chest,
+        'roundTummy': roundTummy,
+        'roundHip': roundHip,
+        'roundArm': roundArm,
+        'topLength': topLength,
+        'pant': pant,
+        'waist': waist,
+        'laps': laps,
+        'calf': calf,
+        'pantTip': pantTip,
+        'pantLength': pantLength,
       };
 
   @override

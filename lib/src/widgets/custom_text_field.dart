@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final Function(String)? onChanged;
   final String label;
   final bool isPassword;
@@ -10,11 +10,11 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     Key? key,
     this.suffix,
-    this.controller,
     this.onChanged,
     required this.hintText,
     required this.label,
     required this.isPassword,
+    required this.controller,
   }) : super(key: key);
 
   @override

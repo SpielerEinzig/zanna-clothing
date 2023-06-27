@@ -12,9 +12,33 @@ class ClientProvider with ChangeNotifier {
 
   List<ClientModel> get getClientList => _clientList;
 
+  List<ClientModel> searchClient(String parameter) {
+    List<ClientModel> clients = [];
+
+    for (var client in _clientList) {
+      if (client.name.toLowerCase().contains(parameter) ||
+          client.email.toLowerCase().contains(parameter) ||
+          client.postalCode.toLowerCase().contains(parameter) ||
+          client.shopId.toLowerCase().contains(parameter) ||
+          client.occasion.toLowerCase().contains(parameter) ||
+          client.profession.toLowerCase().contains(parameter) ||
+          client.phoneNumber.toLowerCase().contains(parameter) ||
+          client.address.toLowerCase().contains(parameter) ||
+          client.birthday.toLowerCase().contains(parameter)) {
+        clients.add(client);
+      }
+    }
+
+    return clients;
+  }
+
   listenClientList() async {
     if (_clientList.isEmpty) {
-      _firestore.collection('clients').snapshots().listen((snapshots) {
+      _firestore
+          .collection('clients')
+          .orderBy("dateAdded", descending: true)
+          .snapshots()
+          .listen((snapshots) {
         final data = snapshots.docs;
 
         _clientList = data.map<ClientModel>((doc) {

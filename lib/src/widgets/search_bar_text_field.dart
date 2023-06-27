@@ -4,13 +4,13 @@ class SearchBarTextField extends StatelessWidget {
   final Color? color;
   final Color? iconColor;
   final String hintText;
-  final TextEditingController controller;
+  final Function(String) onChanged;
   const SearchBarTextField({
     Key? key,
     this.color,
     this.iconColor,
     required this.hintText,
-    required this.controller,
+    required this.onChanged,
   }) : super(key: key);
 
   @override
@@ -35,7 +35,7 @@ class SearchBarTextField extends StatelessWidget {
           Expanded(
             child: Center(
               child: TextField(
-                controller: controller,
+                onChanged: onChanged,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 16,

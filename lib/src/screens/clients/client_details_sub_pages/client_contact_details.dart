@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../../widgets/custom_text_field.dart';
 
 class ClientContactDetails extends StatelessWidget {
-  final Function(String) name;
-  final Function(String) phone;
-  final Function(String) email;
-  final Function(String) birthday;
-  final Function(String) address;
-  final Function(String) postal;
-  final Function(String) profession;
-  final Function(String) occasion;
+  final TextEditingController name;
+  final TextEditingController phone;
+  final TextEditingController email;
+  final TextEditingController birthday;
+  final TextEditingController address;
+  final TextEditingController postal;
+  final TextEditingController profession;
+  final TextEditingController occasion;
   const ClientContactDetails({
     Key? key,
     required this.name,
@@ -29,52 +29,52 @@ class ClientContactDetails extends StatelessWidget {
       child: Column(
         children: [
           CustomTextField(
+            controller: name,
             hintText: "Name",
             label: "Client's Name",
             isPassword: false,
-            onChanged: name,
           ),
           CustomTextField(
+            controller: phone,
             hintText: "Client's phone number",
             label: "Phone number",
             isPassword: false,
-            onChanged: phone,
           ),
           CustomTextField(
+            controller: email,
             hintText: "Email",
             label: "Client's email",
             isPassword: false,
-            onChanged: email,
           ),
           CustomTextField(
+            controller: birthday,
             hintText: "MM/DD/YYYY",
             label: "Client's birthday",
             isPassword: false,
-            onChanged: birthday,
           ),
           CustomTextField(
+            controller: address,
             hintText: "Client's Address",
             label: "Address",
             isPassword: false,
-            onChanged: address,
           ),
           CustomTextField(
+            controller: postal,
             hintText: "Postal",
             label: "Postal code",
             isPassword: false,
-            onChanged: postal,
           ),
           CustomTextField(
+            controller: profession,
             hintText: "Profession",
             label: "Client's profession",
             isPassword: false,
-            onChanged: profession,
           ),
           CustomTextField(
+            controller: occasion,
             hintText: "Occasion",
             label: "Special occasion",
             isPassword: false,
-            onChanged: occasion,
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class MainUtilities {
   setTextFieldValue({
@@ -13,5 +14,10 @@ class MainUtilities {
         TextPosition(offset: updatedText.length),
       ),
     );
+  }
+
+  static String formatDateTime(DateTime dateTime) {
+    final DateFormat formatter = DateFormat("hh:mm a d'th' MMM yyyy");
+    return formatter.format(dateTime);
   }
 }

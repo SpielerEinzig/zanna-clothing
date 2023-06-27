@@ -17,7 +17,7 @@ class ClientList extends StatefulWidget {
 }
 
 class _ClientListState extends State<ClientList> {
-  final TextEditingController _searchController = TextEditingController();
+  String searchParam = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +47,11 @@ class _ClientListState extends State<ClientList> {
                   Expanded(
                     child: SearchBarTextField(
                         hintText: "Search for a client",
-                        controller: _searchController),
+                        onChanged: (param) {
+                          setState(() {
+                            searchParam = param;
+                          });
+                        }),
                   ),
                   TextButton(
                     onPressed: () {},
@@ -67,20 +71,31 @@ class _ClientListState extends State<ClientList> {
               Expanded(
                 child: Consumer<ClientProvider>(
                     builder: (context, clients, child) {
-                  return clients.getClientList.isEmpty
-                      ? const Center(
-                          child:
-                              Text("You don't have any clients in this shop"),
-                        )
-                      : ListView.builder(
-                          itemCount: clients.getClientList.length,
-                          itemBuilder: (context, index) {
-                            return ClientCard(
-                                onTap: () {},
-                                dateTime:
-                                    clients.getClientList[index].dateAdded,
-                                name: clients.getClientList[index].name);
-                          });
+                  if (searchParam.isEmpty) {
+                    return clients.getClientList.isEmpty
+                        ? const Center(
+                            child:
+                                Text("You don't have any clients in this shop"),
+                          )
+                        : ListView.builder(
+                            itemCount: clients.getClientList.length,
+                            itemBuilder: (context, index) {
+                              return ClientCard(
+                                clientModel: clients.getClientList[index],
+                                shopModel: widget.shopModel,
+                              );
+                            });
+                  } else {
+                    return ListView(
+                      children: [
+                        ...clients.searchClient(searchParam.toLowerCase()).map(
+                              (client) => ClientCard(
+                                  clientModel: client,
+                                  shopModel: widget.shopModel),
+                            ),
+                      ],
+                    );
+                  }
                 }),
               ),
             ],
@@ -89,7 +104,10 @@ class _ClientListState extends State<ClientList> {
         onPressed: () {
           PageNavigation().pushPage(
             context: context,
-            page: const MeasurementDetails(),
+            page: MeasurementDetails(
+              shopModel: widget.shopModel,
+              clientModel: null,
+            ),
           );
         },
         icon: Container(
