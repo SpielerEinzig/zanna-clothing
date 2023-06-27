@@ -6,7 +6,7 @@ class ClientService {
 
   Future<String> createClient(ClientModel clientModel) async {
     try {
-      await _clientCollection.doc().set(clientModel.toJson());
+      _clientCollection.doc().set(clientModel.toJson());
 
       return "Success";
     } on FirebaseException catch (e) {
@@ -16,7 +16,7 @@ class ClientService {
 
   Future<String> editClient(ClientModel clientModel) async {
     try {
-      await _clientCollection.doc().update(clientModel.toJson());
+      _clientCollection.doc(clientModel.id).update(clientModel.toJson());
 
       return "Success";
     } on FirebaseException catch (e) {
@@ -26,7 +26,7 @@ class ClientService {
 
   Future<String> deleteClient(String id) async {
     try {
-      await _clientCollection.doc(id).delete();
+      _clientCollection.doc(id).delete();
 
       return "Success";
     } on FirebaseException catch (e) {

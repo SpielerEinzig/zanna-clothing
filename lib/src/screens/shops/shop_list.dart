@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
+import 'package:zannas_clothing/src/widgets/app_drawer.dart';
 import 'package:zannas_clothing/src/widgets/shop_card.dart';
 
 import '../../provider/shop_provider.dart';
@@ -25,11 +26,8 @@ class _ShopListState extends State<ShopList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const AppDrawer(),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.menu),
-        ),
         title: const Text("SHOPS"),
       ),
       body: Padding(

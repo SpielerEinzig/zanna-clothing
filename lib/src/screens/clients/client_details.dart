@@ -220,39 +220,69 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                 text: "Save",
                 onTap: () async {
                   if (name.text.isNotEmpty) {
-                    await context.read<ClientProvider>().createClient(
-                          ClientModel(
-                            shopId: widget.shopModel != null
-                                ? widget.shopModel!.id
-                                : "",
-                            id: widget.clientModel != null
-                                ? widget.clientModel!.id
-                                : "",
-                            address: address.text,
-                            name: name.text,
-                            email: email.text,
-                            occasion: occasion.text,
-                            birthday: birthday.text,
-                            phoneNumber: phone.text,
-                            postalCode: postal.text,
-                            profession: profession.text,
-                            dateAdded: DateTime.now(),
-                            images: [],
-                            headSize: headSizeController.text,
-                            neck: neckController.text,
-                            chest: chestController.text,
-                            roundTummy: roundTummyController.text,
-                            roundHip: roundHipController.text,
-                            roundArm: roundArmController.text,
-                            topLength: topLengthController.text,
-                            pant: pantController.text,
-                            waist: waistController.text,
-                            laps: lapsController.text,
-                            calf: calfController.text,
-                            pantTip: pantTipController.text,
-                            pantLength: pantLengthController.text,
-                          ),
-                        );
+                    widget.clientModel == null
+                        ? await context.read<ClientProvider>().createClient(
+                              ClientModel(
+                                shopId: widget.shopModel != null
+                                    ? widget.shopModel!.id
+                                    : "",
+                                id: widget.clientModel != null
+                                    ? widget.clientModel!.id
+                                    : "",
+                                address: address.text,
+                                name: name.text,
+                                email: email.text,
+                                occasion: occasion.text,
+                                birthday: birthday.text,
+                                phoneNumber: phone.text,
+                                postalCode: postal.text,
+                                profession: profession.text,
+                                dateAdded: DateTime.now(),
+                                images: [],
+                                headSize: headSizeController.text,
+                                neck: neckController.text,
+                                chest: chestController.text,
+                                roundTummy: roundTummyController.text,
+                                roundHip: roundHipController.text,
+                                roundArm: roundArmController.text,
+                                topLength: topLengthController.text,
+                                pant: pantController.text,
+                                waist: waistController.text,
+                                laps: lapsController.text,
+                                calf: calfController.text,
+                                pantTip: pantTipController.text,
+                                pantLength: pantLengthController.text,
+                              ),
+                            )
+                        : await context.read<ClientProvider>().editClient(
+                              ClientModel(
+                                shopId: widget.clientModel!.shopId,
+                                id: widget.clientModel!.id,
+                                address: address.text,
+                                name: name.text,
+                                email: email.text,
+                                occasion: occasion.text,
+                                birthday: birthday.text,
+                                phoneNumber: phone.text,
+                                postalCode: postal.text,
+                                profession: profession.text,
+                                dateAdded: widget.clientModel!.dateAdded,
+                                images: [],
+                                headSize: headSizeController.text,
+                                neck: neckController.text,
+                                chest: chestController.text,
+                                roundTummy: roundTummyController.text,
+                                roundHip: roundHipController.text,
+                                roundArm: roundArmController.text,
+                                topLength: topLengthController.text,
+                                pant: pantController.text,
+                                waist: waistController.text,
+                                laps: lapsController.text,
+                                calf: calfController.text,
+                                pantTip: pantTipController.text,
+                                pantLength: pantLengthController.text,
+                              ),
+                            );
 
                     await Future.delayed(duration, () {
                       Navigator.pop(context);

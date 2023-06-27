@@ -43,25 +43,35 @@ class _LoginState extends State<Login> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      text: const TextSpan(
-                        text: "Welcome\n\n",
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "Login to your account",
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        RichText(
+                          text: const TextSpan(
+                            text: "Welcome back\n\n",
                             style: TextStyle(
-                              fontSize: 25,
-                              letterSpacing: 1.2,
+                              fontSize: 17,
+                              color: Colors.black,
                               fontWeight: FontWeight.w700,
                             ),
+                            children: [
+                              TextSpan(
+                                text: "Login to your account",
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  letterSpacing: 1.2,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                        const CircleAvatar(
+                          radius: 35,
+                          backgroundColor: Colors.white,
+                          backgroundImage: AssetImage('assets/images/logo.png'),
+                        )
+                      ],
                     ),
                     const SizedBox(height: 30),
                     CustomTextField(
@@ -74,7 +84,7 @@ class _LoginState extends State<Login> {
                       hintText: "Enter your password",
                       controller: _passwordController,
                       label: "Password",
-                      isPassword: false,
+                      isPassword: showPassword,
                       suffix: InkWell(
                         onTap: () => setState(() {
                           showPassword = !showPassword;
