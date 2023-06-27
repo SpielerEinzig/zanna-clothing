@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
 
+import '../../models/client_model.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/client_card.dart';
 import '../../widgets/search_bar_text_field.dart';
@@ -18,6 +19,7 @@ class ClientList extends StatefulWidget {
 
 class _ClientListState extends State<ClientList> {
   String searchParam = "";
+  bool orderByName = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,18 +55,6 @@ class _ClientListState extends State<ClientList> {
                           });
                         }),
                   ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.list,
-                          color: Colors.black,
-                        ),
-                      ],
-                    ),
-                  )
                 ],
               ),
               const SizedBox(height: 30),
@@ -72,16 +62,20 @@ class _ClientListState extends State<ClientList> {
                 child: Consumer<ClientProvider>(
                     builder: (context, clients, child) {
                   if (searchParam.isEmpty) {
-                    return clients.getClientList.isEmpty
+                    List<ClientModel> clientList = widget.shopModel != null
+                        ? clients.getClientsInShop(widget.shopModel!.id)
+                        : clients.getClientList;
+
+                    return clientList.isEmpty
                         ? const Center(
                             child:
                                 Text("You don't have any clients in this shop"),
                           )
                         : ListView.builder(
-                            itemCount: clients.getClientList.length,
+                            itemCount: clientList.length,
                             itemBuilder: (context, index) {
                               return ClientCard(
-                                clientModel: clients.getClientList[index],
+                                clientModel: clientList[index],
                                 shopModel: widget.shopModel,
                               );
                             });

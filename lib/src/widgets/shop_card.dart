@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
+import 'package:zannas_clothing/src/provider/client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 
 import '../screens/clients/client_list.dart';
@@ -120,24 +122,29 @@ class ShopCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              Row(
-                children: [
-                  const SizedBox(width: 35),
-                  TextButton(
-                    onPressed: () {
-                      PageNavigation().pushPage(
-                        context: context,
-                        page: ClientList(shopModel: shop),
-                      );
-                    },
-                    child: const Row(
-                      children: [
-                        Text("Show 25 clients"),
-                        Icon(Icons.arrow_forward_ios),
-                      ],
-                    ),
-                  ),
-                ],
+              Consumer<ClientProvider>(
+                builder: (context, clients, child) {
+                  int clientLength = clients.getClientsInShop(shop.id).length;
+                  return Row(
+                    children: [
+                      const SizedBox(width: 35),
+                      TextButton(
+                        onPressed: () {
+                          PageNavigation().pushPage(
+                            context: context,
+                            page: ClientList(shopModel: shop),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text("Show $clientLength clients in this shop"),
+                            const Icon(Icons.arrow_forward_ios),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                },
               ),
             ],
           ),

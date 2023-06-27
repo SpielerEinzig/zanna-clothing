@@ -32,6 +32,18 @@ class ClientProvider with ChangeNotifier {
     return clients;
   }
 
+  List<ClientModel> getClientsInShop(String shopId) {
+    List<ClientModel> clients = [];
+
+    for (var client in _clientList) {
+      if (client.shopId.toLowerCase() == shopId.toLowerCase()) {
+        clients.add(client);
+      }
+    }
+
+    return clients;
+  }
+
   listenClientList() async {
     if (_clientList.isEmpty) {
       _firestore
