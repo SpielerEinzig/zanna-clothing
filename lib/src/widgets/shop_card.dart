@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zannas_clothing/src/models/client_model.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
@@ -101,7 +102,7 @@ class ShopCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              const Row(
+              Row(
                 children: [
                   SizedBox(width: 17),
                   CircleAvatar(
@@ -110,14 +111,21 @@ class ShopCard extends StatelessWidget {
                   ),
                   SizedBox(width: 20),
                   Expanded(
-                    child: Text(
-                      "Last Client: Obi Cubanna",
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                    ),
+                    child: Consumer<ClientProvider>(
+                        builder: (context, clients, child) {
+                      List<ClientModel> clientList =
+                          clients.getClientsInShop(shop.id);
+                      return Text(
+                        clientList.isEmpty
+                            ? "No clients in this shop"
+                            : "Last Client: ${clientList.first.name}",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),
