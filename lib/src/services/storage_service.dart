@@ -1,19 +1,24 @@
-import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 class StorageService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<String> uploadFile({
-    required File file,
+    required XFile file,
     required String clientId,
   }) async {
-    final path = "files/images/$clientId/${DateTime.now()}.png";
+    final path = "files/image/$clientId/${DateTime.now()}";
 
     final ref = _storage.ref().child(path);
 
-    UploadTask uploadTask = ref.putFile(file);
+    Uint8List imageData = await file.readAsBytes();
+
+    var metadata = SettableMetadata(contentType: "image/png");
+
+    UploadTask uploadTask = ref.putData(imageData, metadata);
 
     final snapshot = await uploadTask.whenComplete(() {});
 

@@ -92,7 +92,7 @@ class MeasurementTextField extends StatelessWidget {
                       ),
                       child: const Center(
                           child: Text(
-                        "CM",
+                        "IN",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                           fontSize: 15,

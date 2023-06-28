@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:zannas_clothing/src/services/client_service.dart';
 import 'package:zannas_clothing/src/services/storage_service.dart';
 
@@ -95,18 +94,18 @@ class ClientProvider with ChangeNotifier {
 
   uploadImagesToClient({
     required String clientId,
-    required List<File> selectedFiles,
+    required List<XFile> selectedFiles,
   }) async {
     List<String> imageUrls = await Future.wait(selectedFiles.map((file) {
       return _storageService.uploadFile(file: file, clientId: clientId);
     }).toList());
 
-    print("!========Uploaded file successfully");
+    debugPrint("!========Uploaded file successfully");
 
     await _clientService.uploadClientImages(
         imageUrls: imageUrls, clientId: clientId);
 
-    print("!========Modified doc successfully");
+    debugPrint("!========Modified doc successfully");
 
     notifyListeners();
   }

@@ -1,20 +1,18 @@
-import 'dart:io';
-
 import 'package:image_picker/image_picker.dart';
 
 class ImagePickerService {
   final ImagePicker _picker = ImagePicker();
 
-  Future<List<File>> pickMultipleImages() async {
+  Future<List<XFile>> pickMultipleImages() async {
     List<XFile> pickedImages = await _picker.pickMultiImage();
 
-    return pickedImages.map<File>((image) => File(image.path)).toList();
+    return pickedImages;
   }
 
-  Future<File?> pickImage(ImageSource? imageSource) async {
+  Future<XFile?> pickImage(ImageSource? imageSource) async {
     XFile? pickedImage =
         await _picker.pickImage(source: imageSource ?? ImageSource.camera);
 
-    return pickedImage == null ? null : File(pickedImage.path);
+    return pickedImage;
   }
 }
