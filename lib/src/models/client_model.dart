@@ -9,23 +9,30 @@ class ClientModel {
   String profession;
   String occasion;
   DateTime dateAdded;
+  String notes;
   List<String> images;
   String shopId;
+  //measurements
   String headSize;
   String neck;
+  String shoulder;
+  String sleeve;
   String chest;
   String roundTummy;
   String roundHip;
   String roundArm;
   String topLength;
-  String pant;
+
   String waist;
   String laps;
+  String knee;
   String calf;
-  String pantTip;
+  String roundTip;
   String pantLength;
 
   ClientModel({
+    required this.notes,
+    required this.sleeve,
     required this.shopId,
     required this.id,
     required this.address,
@@ -45,12 +52,13 @@ class ClientModel {
     required this.roundHip,
     required this.roundArm,
     required this.topLength,
-    required this.pant,
+    required this.knee,
     required this.waist,
     required this.laps,
     required this.calf,
-    required this.pantTip,
+    required this.roundTip,
     required this.pantLength,
+    required this.shoulder,
   });
 
   ClientModel.fromJson(Map<String, dynamic> json)
@@ -73,12 +81,15 @@ class ClientModel {
         roundHip = json['roundHip'],
         roundArm = json['roundArm'],
         topLength = json['topLength'],
-        pant = json['pant'],
+        knee = json['knee'],
         waist = json['waist'],
         laps = json['laps'],
         calf = json['calf'],
-        pantTip = json['pantTip'],
-        pantLength = json['pantLength'];
+        roundTip = json['roundTip'],
+        pantLength = json['pantLength'],
+        sleeve = json['sleeve'],
+        notes = json['notes'],
+        shoulder = json['shoulder'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -100,12 +111,15 @@ class ClientModel {
         'roundHip': roundHip,
         'roundArm': roundArm,
         'topLength': topLength,
-        'pant': pant,
+        'knee': knee,
         'waist': waist,
         'laps': laps,
         'calf': calf,
-        'pantTip': pantTip,
+        'roundTip': roundTip,
         'pantLength': pantLength,
+        'sleeve': sleeve,
+        'notes': notes,
+        'shoulder': shoulder
       };
 
   @override

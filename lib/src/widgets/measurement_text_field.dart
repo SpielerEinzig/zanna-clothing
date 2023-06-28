@@ -90,7 +90,7 @@ class MeasurementTextField extends StatelessWidget {
                           bottomRight: Radius.circular(borderRadius),
                         ),
                       ),
-                      child: const Center(
+                      child: Center(
                           child: Text(
                         "IN",
                         textAlign: TextAlign.left,
