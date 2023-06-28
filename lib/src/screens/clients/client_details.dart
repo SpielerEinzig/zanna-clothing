@@ -4,6 +4,7 @@ import 'package:zannas_clothing/src/models/client_model.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_contact_details.dart';
 import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_measurement_list.dart';
+import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_notes.dart';
 import 'package:zannas_clothing/src/utilities/main_utilities.dart';
 import 'package:zannas_clothing/src/utilities/show_snackbar.dart';
 
@@ -12,7 +13,6 @@ import '../../utilities/confirmation_dialog.dart';
 import '../../utilities/constants.dart';
 import '../../utilities/page_navigation.dart';
 import '../../widgets/custom_button.dart';
-import 'client_details_sub_pages/client_images.dart';
 
 class MeasurementDetails extends StatefulWidget {
   final ShopModel? shopModel;
@@ -28,6 +28,8 @@ class MeasurementDetails extends StatefulWidget {
 }
 
 class _MeasurementDetailsState extends State<MeasurementDetails> {
+  final TextEditingController _notesController = TextEditingController();
+  //client detail controller
   final TextEditingController name = TextEditingController();
   final TextEditingController phone = TextEditingController();
   final TextEditingController email = TextEditingController();
@@ -39,6 +41,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
   final PageNavigation _navigation = PageNavigation();
   final MainUtilities _utilities = MainUtilities();
   //measurement controllers
+  final TextEditingController sleeveController = TextEditingController();
   final TextEditingController headSizeController = TextEditingController();
   final TextEditingController neckController = TextEditingController();
   final TextEditingController chestController = TextEditingController();
@@ -46,14 +49,19 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
   final TextEditingController roundHipController = TextEditingController();
   final TextEditingController roundArmController = TextEditingController();
   final TextEditingController topLengthController = TextEditingController();
-  final TextEditingController pantController = TextEditingController();
+  final TextEditingController kneeController = TextEditingController();
   final TextEditingController waistController = TextEditingController();
   final TextEditingController lapsController = TextEditingController();
   final TextEditingController calfController = TextEditingController();
-  final TextEditingController pantTipController = TextEditingController();
+  final TextEditingController roundTipController = TextEditingController();
   final TextEditingController pantLengthController = TextEditingController();
+  final TextEditingController shoulderController = TextEditingController();
 
   initTextFields() {
+    _utilities.setTextFieldValue(
+        controller: shoulderController, text: widget.clientModel!.shoulder);
+    _utilities.setTextFieldValue(
+        controller: _notesController, text: widget.clientModel!.name);
     _utilities.setTextFieldValue(
         controller: name, text: widget.clientModel!.name);
     _utilities.setTextFieldValue(
@@ -85,7 +93,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
     _utilities.setTextFieldValue(
         controller: topLengthController, text: widget.clientModel!.topLength);
     _utilities.setTextFieldValue(
-        controller: pantController, text: widget.clientModel!.pant);
+        controller: kneeController, text: widget.clientModel!.knee);
     _utilities.setTextFieldValue(
         controller: waistController, text: widget.clientModel!.waist);
     _utilities.setTextFieldValue(
@@ -93,7 +101,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
     _utilities.setTextFieldValue(
         controller: calfController, text: widget.clientModel!.calf);
     _utilities.setTextFieldValue(
-        controller: pantTipController, text: widget.clientModel!.pantTip);
+        controller: roundTipController, text: widget.clientModel!.roundTip);
     _utilities.setTextFieldValue(
         controller: pantLengthController, text: widget.clientModel!.pantLength);
   }
@@ -109,7 +117,7 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: widget.clientModel != null ? 3 : 2,
+      length: 3,
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
@@ -180,14 +188,21 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                       color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ),
-              if (widget.clientModel != null)
-                const Tab(
-                  child: Text(
-                    "Pictures",
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w600),
-                  ),
+              const Tab(
+                child: Text(
+                  "Notes",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w600),
                 ),
+              ),
+              // if (widget.clientModel != null)
+              //   const Tab(
+              //     child: Text(
+              //       "Pictures",
+              //       style: TextStyle(
+              //           color: Colors.white, fontWeight: FontWeight.w600),
+              //     ),
+              // ),
             ],
           ),
         ),
@@ -209,6 +224,8 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                       occasion: occasion,
                     ),
                     ClientMeasurementList(
+                        shoulderController: shoulderController,
+                        sleeveController: sleeveController,
                         headSizeController: headSizeController,
                         neckController: neckController,
                         chestController: chestController,
@@ -216,16 +233,17 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                         roundHipController: roundHipController,
                         roundArmController: roundArmController,
                         topLengthController: topLengthController,
-                        pantController: pantController,
+                        kneeController: kneeController,
                         waistController: waistController,
                         lapsController: lapsController,
                         calfController: calfController,
-                        pantTipController: pantTipController,
+                        roundTipController: roundTipController,
                         pantLengthController: pantLengthController),
-                    if (widget.clientModel != null)
-                      ClientImages(
-                        clientModel: widget.clientModel!,
-                      ),
+                    // if (widget.clientModel != null)
+                    //   ClientImages(
+                    //     clientModel: widget.clientModel!,
+                    //   ),
+                    ClientNotesPage(controller: _notesController),
                   ],
                 ),
               ),
@@ -259,16 +277,22 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                                 roundHip: roundHipController.text,
                                 roundArm: roundArmController.text,
                                 topLength: topLengthController.text,
-                                pant: pantController.text,
+                                knee: kneeController.text,
                                 waist: waistController.text,
                                 laps: lapsController.text,
                                 calf: calfController.text,
-                                pantTip: pantTipController.text,
+                                roundTip: roundTipController.text,
                                 pantLength: pantLengthController.text,
+                                notes: _notesController.text,
+                                sleeve: sleeveController.text,
+                                shoulder: shoulderController.text,
                               ),
                             )
                         : await context.read<ClientProvider>().editClient(
                               ClientModel(
+                                shoulder: shoulderController.text,
+                                sleeve: sleeveController.text,
+                                notes: _notesController.text,
                                 shopId: widget.clientModel!.shopId,
                                 id: widget.clientModel!.id,
                                 address: address.text,
@@ -288,11 +312,11 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                                 roundHip: roundHipController.text,
                                 roundArm: roundArmController.text,
                                 topLength: topLengthController.text,
-                                pant: pantController.text,
+                                knee: kneeController.text,
                                 waist: waistController.text,
                                 laps: lapsController.text,
                                 calf: calfController.text,
-                                pantTip: pantTipController.text,
+                                roundTip: roundTipController.text,
                                 pantLength: pantLengthController.text,
                               ),
                             );

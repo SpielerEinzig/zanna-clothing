@@ -10,14 +10,18 @@ class ClientMeasurementList extends StatefulWidget {
   final TextEditingController roundHipController;
   final TextEditingController roundArmController;
   final TextEditingController topLengthController;
-  final TextEditingController pantController;
+  final TextEditingController kneeController;
   final TextEditingController waistController;
   final TextEditingController lapsController;
   final TextEditingController calfController;
-  final TextEditingController pantTipController;
+  final TextEditingController roundTipController;
   final TextEditingController pantLengthController;
+  final TextEditingController sleeveController;
+  final TextEditingController shoulderController;
   const ClientMeasurementList({
     Key? key,
+    required this.shoulderController,
+    required this.sleeveController,
     required this.headSizeController,
     required this.neckController,
     required this.chestController,
@@ -25,11 +29,11 @@ class ClientMeasurementList extends StatefulWidget {
     required this.roundHipController,
     required this.roundArmController,
     required this.topLengthController,
-    required this.pantController,
+    required this.kneeController,
     required this.waistController,
     required this.lapsController,
     required this.calfController,
-    required this.pantTipController,
+    required this.roundTipController,
     required this.pantLengthController,
   }) : super(key: key);
 
@@ -42,6 +46,16 @@ class _ClientMeasurementListState extends State<ClientMeasurementList> {
   Widget build(BuildContext context) {
     return ListView(
       children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, top: 5, bottom: 5),
+          child: Text(
+            "TOP MEASUREMENT",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
         MeasurementTextField(
           hintText: "Head Size",
           title: "Head Size",
@@ -51,6 +65,16 @@ class _ClientMeasurementListState extends State<ClientMeasurementList> {
           hintText: "Neck",
           title: "Neck",
           controller: widget.neckController,
+        ),
+        MeasurementTextField(
+          hintText: "Shoulder",
+          title: "Shoulder",
+          controller: widget.shoulderController,
+        ),
+        MeasurementTextField(
+          hintText: "Sleeve length",
+          title: "Sleeve length",
+          controller: widget.sleeveController,
         ),
         MeasurementTextField(
           hintText: "Chest",
@@ -77,10 +101,17 @@ class _ClientMeasurementListState extends State<ClientMeasurementList> {
           title: "Top Length",
           controller: widget.topLengthController,
         ),
-        MeasurementTextField(
-          hintText: "Pant",
-          title: "Pant",
-          controller: widget.pantController,
+
+        //bottom
+        Padding(
+          padding: const EdgeInsets.only(left: 8.0, top: 20, bottom: 5),
+          child: Text(
+            "TROUSER MEASUREMENT",
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
         ),
         MeasurementTextField(
           hintText: "Waist",
@@ -93,14 +124,19 @@ class _ClientMeasurementListState extends State<ClientMeasurementList> {
           controller: widget.lapsController,
         ),
         MeasurementTextField(
-          hintText: "Calf",
-          title: "Calf",
+          hintText: "Knee",
+          title: "Knee",
+          controller: widget.kneeController,
+        ),
+        MeasurementTextField(
+          hintText: "Round Calf",
+          title: "Round Calf",
           controller: widget.calfController,
         ),
         MeasurementTextField(
-          hintText: "Pant tip",
-          title: "Pant tip",
-          controller: widget.pantTipController,
+          hintText: "Round tip",
+          title: "Round tip",
+          controller: widget.roundTipController,
         ),
         MeasurementTextField(
           hintText: "Pant length",
