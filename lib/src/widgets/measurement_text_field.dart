@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MeasurementTextField extends StatelessWidget {
   final String title;
@@ -66,9 +65,6 @@ class MeasurementTextField extends StatelessWidget {
                     flex: 5,
                     child: TextField(
                       controller: controller,
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(5),
-                      ],
                       style: const TextStyle(
                         fontSize: 20,
                       ),
