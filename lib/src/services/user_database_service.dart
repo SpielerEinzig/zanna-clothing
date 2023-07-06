@@ -34,4 +34,15 @@ class DatabaseService {
       return e.message ?? "An error occurred";
     }
   }
+
+  Future<String> updateUserRole(
+      {required String role, required String id}) async {
+    try {
+      await _firestore.doc(id).update({"role": role});
+
+      return "success";
+    } on FirebaseException catch (e) {
+      return e.message ?? "An error occurred";
+    }
+  }
 }

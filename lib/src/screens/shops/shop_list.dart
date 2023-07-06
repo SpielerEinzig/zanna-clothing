@@ -45,7 +45,8 @@ class _ShopListState extends State<ShopList> {
       ),
       floatingActionButton: Consumer<UserProvider>(
         builder: (context, userProvider, chile) {
-          if (userProvider.getUserModel!.role == "admin") {
+          if (userProvider.getUserModel != null &&
+              userProvider.getUserModel!.role == "admin") {
             return IconButton(
               onPressed: () async {
                 PageNavigation().pushPage(
