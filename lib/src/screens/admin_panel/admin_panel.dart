@@ -25,71 +25,42 @@ class _AdminPanelState extends State<AdminPanel> {
     return Scaffold(
       drawer: const AppDrawer(),
       appBar: AppBar(title: Text("Manage users")),
-      body: StreamBuilder<QuerySnapshot>(
-          stream: stream,
-          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(color: Colors.black),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Text("An error occurred."
-                    " If this persists,"
-                    " contact the administrator"),
-              );
-            }
+      body: Padding(
+        padding: const EdgeInsets.all(5),
+        child: StreamBuilder<QuerySnapshot>(
+            stream: stream,
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(color: Colors.black),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text("An error occurred."
+                      " If this persists,"
+                      " contact the administrator"),
+                );
+              }
 
-            List<String> docIds = snapshot.data!.docs
-                .map<String>((doc) => doc.id.toString())
-                .toList();
+              List<String> docIds = snapshot.data!.docs
+                  .map<String>((doc) => doc.id.toString())
+                  .toList();
 
-            return SingleChildScrollView(
-              child: Table(
-                border: TableBorder.all(),
-                columnWidths: const <int, TableColumnWidth>{
-                  0: FixedColumnWidth(64),
-                  1: FlexColumnWidth(),
-                  2: FixedColumnWidth(100),
-                },
-                defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-                children: <TableRow>[
-                  TableRow(
-                    children: <Widget>[
-                      Center(
-                          child: Text(
-                        "NO.",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      Center(
-                          child: Text(
-                        "Email",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      Center(
-                          child: Text(
-                        "Role",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                    ],
-                  ),
-                  ...snapshot.data!.docs.map((userDoc) {
-                    Map<String, dynamic> data =
-                        userDoc.data()! as Map<String, dynamic>;
-                    return TableRow(
+              return SingleChildScrollView(
+                child: Table(
+                  border: TableBorder.all(),
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FixedColumnWidth(64),
+                    1: FlexColumnWidth(),
+                    2: FixedColumnWidth(100),
+                  },
+                  defaultVerticalAlignment: TableCellVerticalAlignment.middle,
+                  children: <TableRow>[
+                    TableRow(
                       children: <Widget>[
                         Center(
                             child: Text(
-                          (docIds.indexOf(userDoc.id) + 1).toString(),
+                          "NO.",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -97,36 +68,69 @@ class _AdminPanelState extends State<AdminPanel> {
                         )),
                         Center(
                             child: Text(
-                          data['email'],
+                          "Email",
                           style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
                           ),
                         )),
-                        TextButton(
-                          onPressed: () async {
-                            await DatabaseService().updateUserRole(
-                                role:
-                                    data['role'] == "admin" ? "user" : "admin",
-                                id: userDoc.id);
-                          },
-                          child: Center(
+                        Center(
                             child: Text(
-                              data['role'],
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
+                          "Role",
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
+                      ],
+                    ),
+                    ...snapshot.data!.docs.map((userDoc) {
+                      Map<String, dynamic> data =
+                          userDoc.data()! as Map<String, dynamic>;
+                      return TableRow(
+                        children: <Widget>[
+                          Center(
+                              child: Text(
+                            (docIds.indexOf(userDoc.id) + 1).toString(),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                          Center(
+                              child: Text(
+                            data['email'],
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          )),
+                          TextButton(
+                            onPressed: () async {
+                              await DatabaseService().updateUserRole(
+                                  role: data['role'] == "admin"
+                                      ? "user"
+                                      : "admin",
+                                  id: userDoc.id);
+                            },
+                            child: Center(
+                              child: Text(
+                                data['role'],
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    );
-                  }).toList()
-                ],
-              ),
-            );
-          }),
+                        ],
+                      );
+                    }).toList(),
+                  ],
+                ),
+              );
+            }),
+      ),
     );
   }
 }

@@ -54,7 +54,7 @@ class _AppDrawerState extends State<AppDrawer> {
                                 page: ClientList(shopModel: null)),
                             Consumer<UserProvider>(
                                 builder: (context, userProvider, child) {
-                              if (userProvider.getUserModel!.role != "admin") {
+                              if (userProvider.getUserModel!.role == "admin") {
                                 return _DrawerTextWidget(
                                     text: "Admin panel", page: AdminPanel());
                               } else {
