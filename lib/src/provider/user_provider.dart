@@ -40,7 +40,8 @@ class UserProvider with ChangeNotifier {
               username: 'username',
               email: _user!.email!,
               userId: _user!.uid,
-              shopId: 'shopId'),
+              shopId: 'shopId',
+              role: "user"),
         );
 
         listenUserAuthDetails();
@@ -76,20 +77,6 @@ class UserProvider with ChangeNotifier {
   listenUserAuthDetails() {
     FirebaseAuth.instance.authStateChanges().listen((User? user) async {
       _user = user;
-
-      // if (user != null && _userModel == null) {
-      //   debugPrint("Fetching user doc");
-      //   UserModel? userData = await _databaseService.getUser(
-      //     email: user.email!,
-      //     userId: getUserAuthDetail!.uid,
-      //   );
-      //
-      //   if (userData != null) {
-      //     debugPrint("Set user doc");
-      //     _userModel = userData;
-      //     notifyListeners();
-      //   }
-      // }
     });
   }
 
@@ -104,6 +91,7 @@ class UserProvider with ChangeNotifier {
             email: userDoc['email'],
             userId: userDoc['userId'],
             shopId: userDoc['shopId'],
+            role: userDoc['role'],
           );
         }
       });
