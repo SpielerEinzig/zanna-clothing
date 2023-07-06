@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/client_model.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 
 import '../screens/clients/client_list.dart';
@@ -86,18 +87,26 @@ class ShopCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    onPressed: () {
-                      PageNavigation().pushPage(
-                        context: context,
-                        page: ShopDetails(shopModel: shop),
-                      );
+                  Consumer<UserProvider>(
+                    builder: (context, userProvider, child) {
+                      if (userProvider.getUserModel!.role == "admin") {
+                        return IconButton(
+                          onPressed: () {
+                            PageNavigation().pushPage(
+                              context: context,
+                              page: ShopDetails(shopModel: shop),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
                     },
-                    icon: const Icon(
-                      Icons.edit,
-                      size: 18,
-                      color: Colors.white,
-                    ),
                   ),
                 ],
               ),

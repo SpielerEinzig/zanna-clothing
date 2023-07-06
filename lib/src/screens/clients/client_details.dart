@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/client_model.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_contact_details.dart';
 import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_measurement_list.dart';
 import 'package:zannas_clothing/src/screens/clients/client_details_sub_pages/client_notes.dart';
@@ -132,40 +133,46 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
           ),
           actions: [
             if (widget.clientModel != null)
-              IconButton(
-                onPressed: () async {
-                  bool? popPage = await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return ConfirmationDialog(
-                          onAccept: () async {
-                            await context
-                                .read<ClientProvider>()
-                                .deleteClient(widget.clientModel!.id);
+              Consumer<UserProvider>(builder: (context, userProvider, child) {
+                if (userProvider.getUserModel!.role == "admin") {
+                  return IconButton(
+                    onPressed: () async {
+                      bool? popPage = await showDialog(
+                          context: context,
+                          builder: (context) {
+                            return ConfirmationDialog(
+                              onAccept: () async {
+                                await context
+                                    .read<ClientProvider>()
+                                    .deleteClient(widget.clientModel!.id);
 
-                            await Future.delayed(duration, () {
-                              Navigator.pop(context, true);
-                            });
-                          },
-                          title: "Remove this client?",
-                          acceptLabel: "Yes, remove",
-                          content: const Text(
-                              "Are you sure you want to remove this client?"
-                              " You won't be able to recover the client data"),
-                        );
-                      });
+                                await Future.delayed(duration, () {
+                                  Navigator.pop(context, true);
+                                });
+                              },
+                              title: "Remove this client?",
+                              acceptLabel: "Yes, remove",
+                              content: const Text(
+                                  "Are you sure you want to remove this client?"
+                                  " You won't be able to recover the client data"),
+                            );
+                          });
 
-                  if (popPage == true) {
-                    await Future.delayed(duration, () {
-                      Navigator.pop(context);
-                    });
-                  }
-                },
-                icon: const Icon(
-                  Icons.delete_forever,
-                  color: Colors.white,
-                ),
-              ),
+                      if (popPage == true) {
+                        await Future.delayed(duration, () {
+                          Navigator.pop(context);
+                        });
+                      }
+                    },
+                    icon: const Icon(
+                      Icons.delete_forever,
+                      color: Colors.white,
+                    ),
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              }),
           ],
           title: Text(widget.clientModel != null
               ? widget.clientModel!.name
@@ -247,90 +254,96 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
                   ],
                 ),
               ),
-              CustomButton(
-                text: "Save",
-                onTap: () async {
-                  if (name.text.isNotEmpty) {
-                    widget.clientModel == null
-                        ? await context.read<ClientProvider>().createClient(
-                              clientModel: ClientModel(
-                                shopId: widget.shopModel != null
-                                    ? widget.shopModel!.id
-                                    : "",
-                                id: widget.clientModel != null
-                                    ? widget.clientModel!.id
-                                    : "",
-                                address: address.text,
-                                name: name.text,
-                                email: email.text,
-                                occasion: occasion.text,
-                                birthday: birthday.text,
-                                phoneNumber: phone.text,
-                                postalCode: postal.text,
-                                profession: profession.text,
-                                dateAdded: DateTime.now(),
-                                images: [],
-                                headSize: headSizeController.text,
-                                neck: neckController.text,
-                                chest: chestController.text,
-                                roundTummy: roundTummyController.text,
-                                roundHip: roundHipController.text,
-                                roundArm: roundArmController.text,
-                                topLength: topLengthController.text,
-                                knee: kneeController.text,
-                                waist: waistController.text,
-                                laps: lapsController.text,
-                                calf: calfController.text,
-                                roundTip: roundTipController.text,
-                                pantLength: pantLengthController.text,
-                                notes: _notesController.text,
-                                sleeve: sleeveController.text,
-                                shoulder: shoulderController.text,
-                              ),
-                            )
-                        : await context.read<ClientProvider>().editClient(
-                              ClientModel(
-                                shoulder: shoulderController.text,
-                                sleeve: sleeveController.text,
-                                notes: _notesController.text,
-                                shopId: widget.clientModel!.shopId,
-                                id: widget.clientModel!.id,
-                                address: address.text,
-                                name: name.text,
-                                email: email.text,
-                                occasion: occasion.text,
-                                birthday: birthday.text,
-                                phoneNumber: phone.text,
-                                postalCode: postal.text,
-                                profession: profession.text,
-                                dateAdded: widget.clientModel!.dateAdded,
-                                images: [],
-                                headSize: headSizeController.text,
-                                neck: neckController.text,
-                                chest: chestController.text,
-                                roundTummy: roundTummyController.text,
-                                roundHip: roundHipController.text,
-                                roundArm: roundArmController.text,
-                                topLength: topLengthController.text,
-                                knee: kneeController.text,
-                                waist: waistController.text,
-                                laps: lapsController.text,
-                                calf: calfController.text,
-                                roundTip: roundTipController.text,
-                                pantLength: pantLengthController.text,
-                              ),
-                            );
+              Consumer<UserProvider>(builder: (context, userProvider, child) {
+                if (userProvider.getUserModel!.role == "admin") {
+                  return CustomButton(
+                    text: "Save",
+                    onTap: () async {
+                      if (name.text.isNotEmpty) {
+                        widget.clientModel == null
+                            ? await context.read<ClientProvider>().createClient(
+                                  clientModel: ClientModel(
+                                    shopId: widget.shopModel != null
+                                        ? widget.shopModel!.id
+                                        : "",
+                                    id: widget.clientModel != null
+                                        ? widget.clientModel!.id
+                                        : "",
+                                    address: address.text,
+                                    name: name.text,
+                                    email: email.text,
+                                    occasion: occasion.text,
+                                    birthday: birthday.text,
+                                    phoneNumber: phone.text,
+                                    postalCode: postal.text,
+                                    profession: profession.text,
+                                    dateAdded: DateTime.now(),
+                                    images: [],
+                                    headSize: headSizeController.text,
+                                    neck: neckController.text,
+                                    chest: chestController.text,
+                                    roundTummy: roundTummyController.text,
+                                    roundHip: roundHipController.text,
+                                    roundArm: roundArmController.text,
+                                    topLength: topLengthController.text,
+                                    knee: kneeController.text,
+                                    waist: waistController.text,
+                                    laps: lapsController.text,
+                                    calf: calfController.text,
+                                    roundTip: roundTipController.text,
+                                    pantLength: pantLengthController.text,
+                                    notes: _notesController.text,
+                                    sleeve: sleeveController.text,
+                                    shoulder: shoulderController.text,
+                                  ),
+                                )
+                            : await context.read<ClientProvider>().editClient(
+                                  ClientModel(
+                                    shoulder: shoulderController.text,
+                                    sleeve: sleeveController.text,
+                                    notes: _notesController.text,
+                                    shopId: widget.clientModel!.shopId,
+                                    id: widget.clientModel!.id,
+                                    address: address.text,
+                                    name: name.text,
+                                    email: email.text,
+                                    occasion: occasion.text,
+                                    birthday: birthday.text,
+                                    phoneNumber: phone.text,
+                                    postalCode: postal.text,
+                                    profession: profession.text,
+                                    dateAdded: widget.clientModel!.dateAdded,
+                                    images: [],
+                                    headSize: headSizeController.text,
+                                    neck: neckController.text,
+                                    chest: chestController.text,
+                                    roundTummy: roundTummyController.text,
+                                    roundHip: roundHipController.text,
+                                    roundArm: roundArmController.text,
+                                    topLength: topLengthController.text,
+                                    knee: kneeController.text,
+                                    waist: waistController.text,
+                                    laps: lapsController.text,
+                                    calf: calfController.text,
+                                    roundTip: roundTipController.text,
+                                    pantLength: pantLengthController.text,
+                                  ),
+                                );
 
-                    await Future.delayed(duration, () {
-                      Navigator.pop(context);
-                    });
-                  } else {
-                    showSnackBar(
-                        text: "Please enter the client's name",
-                        context: context);
-                  }
-                },
-              ),
+                        await Future.delayed(duration, () {
+                          Navigator.pop(context);
+                        });
+                      } else {
+                        showSnackBar(
+                            text: "Please enter the client's name",
+                            context: context);
+                      }
+                    },
+                  );
+                } else {
+                  return const SizedBox();
+                }
+              }),
             ],
           ),
         ),

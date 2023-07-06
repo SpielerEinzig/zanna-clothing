@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 import 'package:zannas_clothing/src/utilities/confirmation_dialog.dart';
 import 'package:zannas_clothing/src/utilities/main_utilities.dart';
 
@@ -23,96 +24,100 @@ class ClientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 25),
-      child: InkWell(
-        onTap: () {
-          PageNavigation().pushPage(
-            context: context,
-            page: MeasurementDetails(
-                clientModel: clientModel, shopModel: shopModel),
-          );
-        },
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Text(icon ?? "🧵"),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "${clientModel.name}'s measurements",
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                          ),
+    return Consumer<UserProvider>(builder: (context, userProvider, child) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 25),
+        child: InkWell(
+          onTap: () {
+            PageNavigation().pushPage(
+              context: context,
+              page: MeasurementDetails(
+                  clientModel: clientModel, shopModel: shopModel),
+            );
+          },
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.grey[900],
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        const SizedBox(height: 6),
-                        Text(
-                          MainUtilities.formatDateTime(clientModel.dateAdded),
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(icon ?? "🧵"),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${clientModel.name}'s measurements",
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                        )
-                      ],
-                    ),
-                  ],
+                          const SizedBox(height: 6),
+                          Text(
+                            MainUtilities.formatDateTime(clientModel.dateAdded),
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                  onPressed: () async {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return ConfirmationDialog(
-                            onAccept: () async {
-                              await context
-                                  .read<ClientProvider>()
-                                  .deleteClient(clientModel.id);
+                userProvider.getUserModel!.role == "admin"
+                    ? IconButton(
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return ConfirmationDialog(
+                                  onAccept: () async {
+                                    await context
+                                        .read<ClientProvider>()
+                                        .deleteClient(clientModel.id);
 
-                              await Future.delayed(duration, () {
-                                Navigator.pop(context, true);
+                                    await Future.delayed(duration, () {
+                                      Navigator.pop(context, true);
+                                    });
+                                  },
+                                  title: "Remove this client?",
+                                  acceptLabel: "Yes, remove",
+                                  content: const Text(
+                                      "Are you sure you want to remove this client?"
+                                      " You won't be able to recover the client data"),
+                                );
                               });
-                            },
-                            title: "Remove this client?",
-                            acceptLabel: "Yes, remove",
-                            content: const Text(
-                                "Are you sure you want to remove this client?"
-                                " You won't be able to recover the client data"),
-                          );
-                        });
-                  },
-                  icon: const Icon(
-                    Icons.delete_forever,
-                    color: Colors.red,
-                  )),
-            ],
+                        },
+                        icon: const Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ))
+                    : const SizedBox(),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

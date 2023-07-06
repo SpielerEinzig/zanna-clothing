@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/provider/user_provider.dart';
+import 'package:zannas_clothing/src/screens/admin_panel/admin_panel.dart';
 import 'package:zannas_clothing/src/screens/clients/client_list.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_list.dart';
 import 'package:zannas_clothing/src/services/auth_service.dart';
@@ -43,7 +44,7 @@ class _AppDrawerState extends State<AppDrawer> {
                       const EdgeInsets.symmetric(horizontal: 5, vertical: 15),
                   child: Column(
                     children: [
-                      const Expanded(
+                      Expanded(
                         child: Column(
                           children: [
                             _DrawerTextWidget(
@@ -51,6 +52,15 @@ class _AppDrawerState extends State<AppDrawer> {
                             _DrawerTextWidget(
                                 text: "All clients",
                                 page: ClientList(shopModel: null)),
+                            Consumer<UserProvider>(
+                                builder: (context, userProvider, child) {
+                              if (userProvider.getUserModel!.role == "admin") {
+                                return _DrawerTextWidget(
+                                    text: "Admin panel", page: AdminPanel());
+                              } else {
+                                return const SizedBox();
+                              }
+                            }),
                           ],
                         ),
                       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 import 'package:zannas_clothing/src/screens/shops/shop_details.dart';
 import 'package:zannas_clothing/src/widgets/app_drawer.dart';
 import 'package:zannas_clothing/src/widgets/shop_card.dart';
@@ -21,6 +22,8 @@ class _ShopListState extends State<ShopList> {
     super.initState();
     context.read<ShopProvider>().listenShopList();
     context.read<ClientProvider>().listenClientList();
+    context.read<UserProvider>().listenUserDocument();
+    context.read<UserProvider>().listenUserAuthDetails();
   }
 
   @override
@@ -40,26 +43,35 @@ class _ShopListState extends State<ShopList> {
               });
         }),
       ),
-      floatingActionButton: IconButton(
-        onPressed: () async {
-          PageNavigation().pushPage(
-            context: context,
-            page: const ShopDetails(shopModel: null),
-          );
+      floatingActionButton: Consumer<UserProvider>(
+        builder: (context, userProvider, chile) {
+          if (userProvider.getUserModel != null &&
+              userProvider.getUserModel!.role == "admin") {
+            return IconButton(
+              onPressed: () async {
+                PageNavigation().pushPage(
+                  context: context,
+                  page: const ShopDetails(shopModel: null),
+                );
+              },
+              icon: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
         },
-        icon: Container(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.black,
-          ),
-          child: const Padding(
-            padding: EdgeInsets.all(12),
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
       ),
     );
   }

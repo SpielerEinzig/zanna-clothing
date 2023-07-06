@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zannas_clothing/src/models/shop_model.dart';
 import 'package:zannas_clothing/src/provider/client_provider.dart';
+import 'package:zannas_clothing/src/provider/user_provider.dart';
 
 import '../../models/client_model.dart';
 import '../../utilities/page_navigation.dart';
@@ -94,29 +95,37 @@ class _ClientListState extends State<ClientList> {
               ),
             ],
           )),
-      floatingActionButton: IconButton(
-        onPressed: () {
-          PageNavigation().pushPage(
-            context: context,
-            page: MeasurementDetails(
-              shopModel: widget.shopModel,
-              clientModel: null,
-            ),
-          );
+      floatingActionButton: Consumer<UserProvider>(
+        builder: (context, userProvider, chile) {
+          if (userProvider.getUserModel!.role == "admin") {
+            return IconButton(
+              onPressed: () {
+                PageNavigation().pushPage(
+                  context: context,
+                  page: MeasurementDetails(
+                    shopModel: widget.shopModel,
+                    clientModel: null,
+                  ),
+                );
+              },
+              icon: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.black,
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          } else {
+            return const SizedBox();
+          }
         },
-        icon: Container(
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.black,
-          ),
-          child: const Padding(
-            padding: EdgeInsets.all(12),
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          ),
-        ),
       ),
     );
   }
