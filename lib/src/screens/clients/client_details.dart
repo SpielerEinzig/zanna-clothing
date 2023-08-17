@@ -60,6 +60,8 @@ class _MeasurementDetailsState extends State<MeasurementDetails> {
 
   initTextFields() {
     _utilities.setTextFieldValue(
+        controller: sleeveController, text: widget.clientModel!.sleeve);
+    _utilities.setTextFieldValue(
         controller: shoulderController, text: widget.clientModel!.shoulder);
     _utilities.setTextFieldValue(
         controller: _notesController, text: widget.clientModel!.notes);

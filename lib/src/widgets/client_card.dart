@@ -58,28 +58,34 @@ class ClientCard extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "${clientModel.name}'s measurements",
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Tooltip(
+                              message: "${clientModel.name}'s measurements",
+                              child: Text(
+                                "${clientModel.name}'s measurements",
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 6),
-                          Text(
-                            MainUtilities.formatDateTime(clientModel.dateAdded),
-                            style: const TextStyle(
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          )
-                        ],
+                            const SizedBox(height: 6),
+                            Text(
+                              MainUtilities.formatDateTime(
+                                  clientModel.dateAdded),
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),
